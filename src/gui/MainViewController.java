@@ -36,12 +36,13 @@ public class MainViewController implements Initializable {
 	public void onMenuItemSellerAction() {
 		Alerts.showAlert("Seller", "Seller Screen", null, AlertType.CONFIRMATION);
 	}
+	
 	//Method to access the Department Screen
 	@FXML
 	public void onMenuItemDepartmentAction() {
-		Alerts.showAlert("Department", "Department Screen", null, AlertType.CONFIRMATION);
+		loadView("/gui/DepartmentView.fxml");
 	}
-
+	
 	//Method to access the about Screen
 	@FXML
 	public void onMenuItemIndexAction() {
