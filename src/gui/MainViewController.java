@@ -15,38 +15,36 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-
-
+import model.services.DepartmentService;
 
 public class MainViewController implements Initializable {
 
-	//Created a variable of a menu item Type
+	// Created a variable of a menu item Type
 	@FXML
 	private MenuItem menuItemSeller;
-	//Created a variable of a menu item Type
+	// Created a variable of a menu item Type
 	@FXML
 	private MenuItem menuItemDepartment;
-	//Created a variable of a menu item Type
+	// Created a variable of a menu item Type
 	@FXML
 	private MenuItem menuItemIndex;
-    
-	
-	//Method to access the Seller Screen
+
+	// Method to access the Seller Screen
 	@FXML
 	public void onMenuItemSellerAction() {
 		Alerts.showAlert("Seller", "Seller Screen", null, AlertType.CONFIRMATION);
 	}
-	
-	//Method to access the Department Screen
+
+	// Method to access the Department Screen
 	@FXML
 	public void onMenuItemDepartmentAction() {
-		loadView("/gui/DepartmentView.fxml");
+		loadView2("/gui/DepartmentView.fxml");
 	}
-	
-	//Method to access the about Screen
+
+	// Method to access the about Screen
 	@FXML
 	public void onMenuItemIndexAction() {
-		//Method to load the screen About.
+		// Method to load the screen About.
 		loadView("/gui/About.fxml");
 	}
 
@@ -56,7 +54,7 @@ public class MainViewController implements Initializable {
 
 	}
 
-	//Method to load the screen About.
+	// Method to load the other Screens
 	private void loadView(String absoluteName) {
 			try {
 				//Instantiated a new FXMLLoader receiving the absoluteName by argument.
@@ -80,10 +78,42 @@ public class MainViewController implements Initializable {
 			}
 			
 		catch(IOException e){
+			
 		Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 	    }
+	}
 
+			//Method to load the screen About.
+			private void loadView2(String absoluteName) {
+					try {
+						//Instantiated a new FXMLLoader receiving the absoluteName by argument.
+						FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+						//Created a new VBox receiving the loader
+						VBox newVBox = loader.load();
+		 
+						//Created a new Scene reference the MainScene
+						Scene mainScene = Main.getMainScene();
+						//Get the Vbox of the MainView.
+						VBox mainVBox =   (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+
+						//Create a reference to menu.
+						Node mainMenu = mainVBox.getChildren().get(0);
+						//Clear all the children in the VBox.
+						mainVBox.getChildren().clear();
+						//Add the mainMenu
+						mainVBox.getChildren().add(mainMenu);
+						//Add all elements of the newVBox.
+						mainVBox.getChildren().addAll(newVBox.getChildren());
+						
+						DepartmentController controller = loader.getController();
+						controller.SetDepartmentService(new DepartmentService());
+						controller.updateTableView();
+						
+						
+					}
+					
+				catch(IOException e){
+				Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
+			    }
 }
-
 }
-
